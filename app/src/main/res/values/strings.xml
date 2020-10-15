@@ -18,4 +18,5 @@
     <string name="menu_upcoming_movies">Upcoming</string>
 
     <string name="movie_mania">Movie\nMania</string>
+    <string name="no_data_found">No data found</string>
 </resources>

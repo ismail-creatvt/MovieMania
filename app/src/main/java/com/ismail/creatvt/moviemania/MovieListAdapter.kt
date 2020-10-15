@@ -8,15 +8,30 @@ import com.bumptech.glide.Glide
 import com.ismail.creatvt.moviemania.model.MovieItem
 import kotlinx.android.synthetic.main.movie_item_layout.view.*
 
-class MovieListAdapter(val movies:ArrayList<MovieItem>): RecyclerView.Adapter<MovieListAdapter.MovieListItemViewHolder>() {
+/***
+ * This adapter will be responsible for showing the list of movie items in all
+ * the screens like "Upcoming", "Top Rated", etc
+ *
+ * It will take the list of MovieItems
+ * @see MovieItem
+ *
+ */
+class MovieListAdapter(val movies: ArrayList<MovieItem>) :
+    RecyclerView.Adapter<MovieListAdapter.MovieListItemViewHolder>() {
 
     class MovieListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    fun updateItems(newList: List<MovieItem>){
+    /**
+     * Whenever the list of movies will be updated
+     * this method should be called
+     * It will update the list and refresh the UI
+     */
+    fun updateItems(newList: List<MovieItem>) {
         movies.clear() //Removes all items from the list
         movies.addAll(newList) //Inserts the updated list
         notifyDataSetChanged()
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -24,15 +39,29 @@ class MovieListAdapter(val movies:ArrayList<MovieItem>): RecyclerView.Adapter<Mo
         return MovieListItemViewHolder(view)
     }
 
+
+    /**
+     * This method will do the work of setting the data on the UI elements
+     *
+     * It will also load images from URL using Glide
+     */
     override fun onBindViewHolder(holder: MovieListItemViewHolder, position: Int) {
         //Set the data for a single movie item
         val movie = movies[position]
-        holder.itemView.name_text.setText(movie.title)
-        holder.itemView.genre_text.setText(movie.genreIds.joinToString(","))
-        holder.itemView.overview_text.setText(movie.overview)
+        holder.itemView.name_text.text = movie.title
 
+        val genres = movie.genreIds.joinToString(", ", transform = {
+            Utility.genreMap[it] ?: ""
+        })
+        holder.itemView.genre_text.text = genres
+        holder.itemView.overview_text.text = movie.overview
+
+
+        //We are using Glide to load images
+        //because it is a specialized library for image loading and caching
+        //and it does some optimizations
         Glide.with(holder.itemView)
-            .load(Utility.getImageURL(movie.posterPath))
+            .load(Utility.getThumbnailURL(movie.posterPath))
             .into(holder.itemView.poster_image)
     }
 

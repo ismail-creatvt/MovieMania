@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ismail.creatvt.moviemania.model.MovieItem
 import com.ismail.creatvt.moviemania.MovieListAdapter
 import com.ismail.creatvt.moviemania.R
 import com.ismail.creatvt.moviemania.RetrofitFactory
 import com.ismail.creatvt.moviemania.api.MovieListService
 import com.ismail.creatvt.moviemania.model.MoviePageResponse
+import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.fragment_movies_list.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,7 +36,9 @@ class MovieListFragment : Fragment(), Callback<MoviePageResponse> {
         val retrofit = RetrofitFactory.getInstance()
         val movieListService = retrofit.create(MovieListService::class.java)
 
-        val call = movieListService.getTopRatedMovies()
+        val endPoint = requireArguments().getString("endPoint")?:""
+
+        val call = movieListService.getMoviesList(endPoint)
 
         call.enqueue(this)
 
@@ -49,15 +51,20 @@ class MovieListFragment : Fragment(), Callback<MoviePageResponse> {
         call: Call<MoviePageResponse>,
         response: Response<MoviePageResponse>
     ) {
+        loader.visibility = View.GONE
         //Successful response from API
         if(response.body() != null){
             val movieResponse = response.body() as MoviePageResponse
             adapter?.updateItems(movieResponse.results)
+            return
         }
+        no_data_text.visibility = View.VISIBLE
     }
 
     override fun onFailure(call: Call<MoviePageResponse>, t: Throwable) {
         Log.d("Exception", "Reason : ${t.message}")
+        loader.visibility = View.GONE
+        no_data_text.visibility = View.VISIBLE
     }
 
 }

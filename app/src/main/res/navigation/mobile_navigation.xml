@@ -10,23 +10,45 @@
         android:name="com.ismail.creatvt.moviemania.features.MovieListFragment"
         android:label="@string/menu_top_rated_movies"
         tools:layout="@layout/fragment_movies_list">
-        <argument android:name="url"
-            android:defaultValue=""
+        <argument android:name="endPoint"
+            android:defaultValue="top_rated"
+            app:argType="string"
             />
     </fragment>
     <fragment
         android:id="@+id/nav_popular"
         android:name="com.ismail.creatvt.moviemania.features.MovieListFragment"
         android:label="@string/menu_popular_movies"
-        tools:layout="@layout/fragment_movies_list" />
+        tools:layout="@layout/fragment_movies_list">
+
+        <argument android:name="endPoint"
+            android:defaultValue="popular"
+            app:argType="string"
+            />
+
+    </fragment>
     <fragment
         android:id="@+id/nav_latest_movies"
         android:name="com.ismail.creatvt.moviemania.features.MovieListFragment"
         android:label="@string/menu_latest_movies"
-        tools:layout="@layout/fragment_movies_list" />
+        tools:layout="@layout/fragment_movies_list">
+
+        <argument android:name="endPoint"
+            android:defaultValue="latest"
+            app:argType="string"
+            />
+
+    </fragment>
     <fragment
         android:id="@+id/nav_upcoming"
         android:name="com.ismail.creatvt.moviemania.features.MovieListFragment"
         android:label="@string/menu_upcoming_movies"
-        tools:layout="@layout/fragment_movies_list" />
+        tools:layout="@layout/fragment_movies_list">
+
+        <argument android:name="endPoint"
+            android:defaultValue="upcoming"
+            app:argType="string"
+            />
+
+    </fragment>
 </navigation>
